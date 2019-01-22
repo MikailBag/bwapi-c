@@ -206,6 +206,7 @@ void onUnitMorph(AIModule* module, Unit* unit) {}
 void onUnitRenegade(AIModule* module, Unit* unit) {}
 void onSaveGame(AIModule* module, const char* gameName) {}
 void onUnitComplete(AIModule* module, Unit* unit) {}
+void drop(AIModule* module) {}
 
 static AIModule_vtable module_vtable = {
     onStart,
@@ -224,7 +225,8 @@ static AIModule_vtable module_vtable = {
     onUnitMorph,
     onUnitRenegade,
     onSaveGame,
-    onUnitComplete
+    onUnitComplete,
+    drop
 };
 
 DLLEXPORT void gameInit(BWAPI_Game* game) {

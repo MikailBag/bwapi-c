@@ -37,7 +37,7 @@ extern "C" {
 ///
 /// Example:
 ///  typedef struct MyModule {
-///   truct AIModule; // base
+///   struct AIModule; // base
 ///   int my_field;
 ///   ...
 ///  } MyModule;
@@ -49,6 +49,7 @@ typedef struct AIModule {
 
 struct AIModule_vtable
 {
+    // Game lifecycle hooks
     void (*onStart)(AIModule* module);
     void (*onEnd)(AIModule* module, bool isWinner);
     void (*onFrame)(AIModule* module);
@@ -66,6 +67,9 @@ struct AIModule_vtable
     void (*onUnitRenegade)(AIModule* module, Unit* unit);
     void (*onSaveGame)(AIModule* module, const char* gameName);
     void (*onUnitComplete)(AIModule* module, Unit* unit);
+    // Destructor
+    // It is guaranteed drop() will be called exactly once, and after all other calls
+    void (*drop)(AIModule* module);
 };
 
 /* BWAPI::AIModule* */ void* createAIModuleWrapper(AIModule* module);

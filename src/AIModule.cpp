@@ -1,6 +1,14 @@
 #include <AIModule.h>
 #include "Cast.hpp"
 
+template<typename T>
+void checkPointer(T* pointer) {
+    if (pointer == nullptr) {
+        printf("[BWAPI-C] FATAL ERROR: incorrect pointer");
+        abort();
+    }
+}
+
 class AIModuleWrapper : public BWAPI::AIModule
 {
 protected:
@@ -58,10 +66,34 @@ public:
     virtual void onUnitComplete(BWAPI::Unit unit) override {
         module->vtable->onUnitComplete(module, reinterpret_cast<Unit*>(unit));
     }
+    virtual ~AIModuleWrapper() override {
+        module->vtable->drop(module);
+    }
 
     AIModuleWrapper(::AIModule* module)
         : module(module)
     {
+        checkPointer(module);
+        checkPointer(module->vtable);
+        checkPointer(module->vtable->onStart);
+        checkPointer(module->vtable->onEnd);
+        checkPointer(module->vtable->onFrame);
+        checkPointer(module->vtable->onSendText);
+        checkPointer(module->vtable->onReceiveText);
+        checkPointer(module->vtable->onPlayerLeft);
+        checkPointer(module->vtable->onNukeDetect);
+        checkPointer(module->vtable->onUnitDiscover);
+        checkPointer(module->vtable->onUnitEvade);
+        checkPointer(module->vtable->onUnitShow);
+        checkPointer(module->vtable->onUnitHide);
+        checkPointer(module->vtable->onUnitCreate);
+        checkPointer(module->vtable->onUnitDestroy);
+        checkPointer(module->vtable->onUnitMorph);
+        checkPointer(module->vtable->onUnitRenegade);
+        checkPointer(module->vtable->onSaveGame);
+        checkPointer(module->vtable->onUnitComplete);
+        checkPointer(module->vtable->drop);
+
     }
 };
 
